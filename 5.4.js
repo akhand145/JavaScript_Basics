@@ -35,3 +35,22 @@ fruits.push("Banana");
 console.log( fruits );
 
 // Shift and unshift:
+fruits.shift();
+console.log( fruits );
+
+fruits.unshift("Apple");
+console.log( fruits );
+
+// Method Push and Unshift can add multiple elements:
+fruits.push("Orange", "Lemon");
+fruits.unshift("Pineapple", "Peach");
+
+console.log( fruits );
+
+// Internals : arr[0]
+let arr = fruits;
+console.log( arr === fruits );
+arr.push("Pear");
+console.log( fruits );
+
+//////////////////////////////////////////////////////////////
