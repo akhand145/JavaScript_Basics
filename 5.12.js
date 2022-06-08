@@ -90,7 +90,7 @@ let room = {
   let meetup1 = {
     title: "Conference",
     participants: ["Rahul", "Raman"],
-    place: room
+    // place: room
   };
   
 meetup.place = room;
@@ -116,6 +116,72 @@ console.log( JSON.stringify(meetup1, ['title', 'participants']) );
 // console.log( JSON.stringify(meetup1, ['title', 'participants', 'place', 'name', 'number']) );
 
 
+///////////////////// Formatting Space /////////////////////////////
+
+let user3 = {
+    name: "Rohit",
+    age: 25,
+    roles: {
+      isAdmin: false,
+      isEditor: true
+    }
+  };
+  
+  console.log(JSON.stringify(user3, null, 2));
+
+////////////////////// Custom "toJSON" /////////////////////////////
+
+let room2 = {
+    number: 23,
+    toJSON() {
+      return this.number;
+    }
+  };
+  
+  let meetup2 = {
+    title: "Conference",
+    room2
+  };
+  
+  console.log( JSON.stringify(room2) ); // 23  
+  console.log( JSON.stringify(meetup2) );
+
+
+///////////////////////////// JSON.parse ////////////////////////////
+
+// str : JSON-string to parse.
+// reviver : Optional function(key,value) that will be called for each (key, value) pair 
+// and can transform the value.
+
+// for stringified array
+let numbers = "[0, 1, 2, 3]";
+numbers = JSON.parse(numbers);
+console.log( numbers [1] ); // 1
+
+// for nested objects
+let userData = '{ "name": "John", "age": 35, "isAdmin": false, "friends": [0,1,2,3] }';
+let user4 = JSON.parse(userData);
+
+console.log( user4.friends[1] ); // 1
+
+
+///////////////////////////// using reviver //////////////////////////////
+
+let schedule = `{
+    "meetups": [
+      {"title":"Conference","date":"2017-11-30T12:00:00.000Z"},
+      {"title":"Birthday","date":"2017-04-18T12:00:00.000Z"}
+    ]
+  }`;
+  
+  schedule = JSON.parse(schedule, function(key, value) {
+    if (key == 'date') return new Date(value);
+    return value;
+  });
+  
+  console.log( schedule.meetups[1].date.getDate() ); // works!
+
+
 
 /////////////////////////// Tasks : ////////////////////////////////
 
@@ -128,3 +194,34 @@ let user1 = {
 let user2 = JSON.parse(JSON.stringify(user));
 
 console.log(user1);
+
+
+// 2. Exclude Backrefernces ////////////////////////////////////////////
+
+let room4 = {
+    number: 23
+  };
+  
+  let meetup4 = {
+    title: "Conference",
+    occupiedBy: [{name: "John"}, {name: "Alice"}],
+    place: room4
+  };
+
+// circular references
+room4.occupiedBy = meetup4;
+meetup4.self = meetup4;  
+
+console.log( JSON.stringify(meetup4, function replacer(key, value) {
+    return (key != "" && value == meetup4) ? undefined : value;
+}));
+
+/*
+{
+  "title":"Conference",
+  "occupiedBy":[{"name":"John"},{"name":"Alice"}],
+  "place":{"number":23}
+}
+*/
+
+////////////////////////////////////////////////////////////////////////
