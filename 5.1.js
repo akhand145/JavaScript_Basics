@@ -1,7 +1,7 @@
 ////////// Methods  of Primitives ////////////
 
 let rohit = {
-    name: "Rohit",
+    name: "Shubhm",
     sayHi: function() {
       console.log("Hi buddy!");
     }
