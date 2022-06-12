@@ -6,7 +6,7 @@ let message = "Hello";
 console.log(message);
 
 // show another message
-let message1 = "Goodbyeeeeeeeeee";
+let message1 = "Goodbye";
 console.log(message1);
 
 ///////////////////// Nested Functions ////////////////////////
