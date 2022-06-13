@@ -42,4 +42,4 @@ function sayHiBye(firstName, lastName) {
   console.log( counter() ); // 2
 
 // Variables
-  
+  //
