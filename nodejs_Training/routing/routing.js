@@ -1,5 +1,6 @@
 const http = require('http');
-const { type } = require('os');
+const fs = require('fs');
+// const { type } = require('os');
 
 const server = http.createServer((req, res) => {
     // console.log(req.url);
@@ -9,6 +10,14 @@ const server = http.createServer((req, res) => {
         res.end('Hello from about');
     } else if(req.url == "/contact") {
         res.end('Hello from contact');
+    } else if(req.url == "/userapi") {
+        res.writeHead(200, { "Content-Type": "application/json" })
+        fs.readFile(`${__dirname}/userApi/userapi.json`, "utf-8", (err, data) => {
+            console.log(data);
+            const objData = JSON.parse(data);
+            res.end(objData[2].name);
+        })
+        
     } else {
         res.writeHead(404, {"Content-type" : "text/html"});
         res.end("<h1> 404 Error Page </h1>");
@@ -18,3 +27,4 @@ const server = http.createServer((req, res) => {
 server.listen(8000, "127.0.0.1", () => {
     console.log("listening to the port no 8000");
 });
+
