@@ -5,7 +5,8 @@ const search = [3,4];
 
 const index = (array, search) => {
     for ( let i = 0; i < array.length; i++) {
-        if(JSON.stringify(array[i]) === JSON.stringify(search)) return i;
+        if(JSON.stringify(array[i]) === JSON.stringify(search)) 
+            return i;
     }
     return false;
 }
