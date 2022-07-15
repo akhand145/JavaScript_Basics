@@ -13,7 +13,6 @@ var Employee = function(employee) {
 
 
 // Find all the Data:
-
 Employee.findAll = (result) => {
 
     dbConn.query("Select * from employees", (err, res) => {
@@ -30,7 +29,6 @@ Employee.findAll = (result) => {
 
 
 // Find the Data by Id:
-
 Employee.findById = (id, result) => {
 
     dbConn.query("Select * from employees where id = ? ", id, (err, res) => {
@@ -46,7 +44,6 @@ Employee.findById = (id, result) => {
 
 
 // Create the Data:
-
 Employee.create = (newEmp, result) => {
 
     dbConn.query("INSERT INTO employees SET ?", newEmp, (err, res) => {
@@ -63,7 +60,6 @@ Employee.create = (newEmp, result) => {
 
 
 // Update the Data: 
-
 Employee.update = (id, emp_update, result) => {
 
     dbConn.query("UPDATE employees SET ? WHERE id = ?", 
@@ -82,7 +78,6 @@ Employee.update = (id, emp_update, result) => {
 
 
 // Deleted Data Forcefully:
-
 Employee.delete = (id, result) => {
     dbConn.query("Delete from employees WHERE id = ?", [id], (err, res) => {
         if(err) {
@@ -96,7 +91,6 @@ Employee.delete = (id, result) => {
 
 
 // Deleted Data softly:
-
     // dbConn.query("UPDATE employees SET is_deleted = ? WHERE id = ?", 
     // [1, id],
     // (err, res) => {

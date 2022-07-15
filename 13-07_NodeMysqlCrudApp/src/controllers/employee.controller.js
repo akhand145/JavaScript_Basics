@@ -30,7 +30,6 @@ exports.findById = (req, res) => {
 
 // create employee data:
 exports.create = (req, res) => {    
-    // const newEmp = new Employee(req.body);
 
     // check null
     if(req.body.constructor === Object && Object.keys(req.body).length === 0) {
@@ -49,8 +48,7 @@ exports.create = (req, res) => {
 
 // update employee data:
 exports.update = (req, res) => {
-    // const emp_update = new Employee(req.body);
-
+    
     // check null
     if(req.body.constructor === Object && Object.keys(req.body).length === 0) {
 
