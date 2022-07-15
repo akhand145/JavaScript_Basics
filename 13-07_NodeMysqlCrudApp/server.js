@@ -5,9 +5,9 @@ const bodyParser = require('body-parser');
 const app = express();
 
 // setup server port
-const port = process.env.port || 5500;
+const port = process.env.port || 5000;
 
-// parse request of content-type -application/form-urlencoded
+// parse request of content-type -application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended : true}));
 
 // parse request of content-type - application/json
@@ -18,13 +18,15 @@ app.get('/', (req, res) => {
     res.send('Hello World from CRUD API');
 });
 
-// Require employee routes
+// Import employee routes
 const employeeRoutes = require('./src/routes/employee.route');
 
-// using middleware
+// using middleware - Create employee routes
 app.use('/api/v1/employees', employeeRoutes);
+ 
 
 // listening the port
 app.listen(port, () => {
     console.log(`Server is listening on port : ${port}`);
 });
+

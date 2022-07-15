@@ -9,9 +9,10 @@ const dbConn = mysql.createConnection({
     database : 'crud_api'
 });
 
-dbConn.connect(function(err) {
+dbConn.connect((err) => {
     if (err) throw err;
     console.log("Database Connected");
 });
 
 module.exports = dbConn;
+
