@@ -5,12 +5,12 @@ const Employee = require('../models/employee.model');
 // findAll employee data:
 exports.findAll = (req, res) => {
 
-    Employee.findAll((err, employee) => {
+    Employee.findAll((err, result) => {
 
         if (err) 
-        res.send(err);
-        console.log('All Employee data', employee);
-        res.json(employee);
+        res.send({ status: "failure", message: err });
+        console.log('All Employee data', result);
+        res.json({ status: "success", res: result });
     });
 };
 
@@ -18,12 +18,14 @@ exports.findAll = (req, res) => {
 // findById employee data:
 exports.findById = (req, res) => {
 
-    Employee.findById(req.params.id, (err, employee) => {
-
+    Employee.findById(req.params.id, (err, result) => {
+        // console.log(employee)
         if (err)
-        res.send(err);
-        console.log('Single Employee data', employee);
-        res.json(employee);
+        res.send({ status: "failure", message: err });
+        else {
+            if(result.length == 0) res.json({ status: "failure", res: "Not found!"});
+            else res.json({ status: "success", res: result });
+            }
     });
 };
 
@@ -32,15 +34,15 @@ exports.findById = (req, res) => {
 exports.create = (req, res) => {    
 
     // check null
-    if(req.body.constructor === Object && Object.keys(req.body).length === 0) {
+    if(Object.keys(req.body).length === 0) {
 
         res.status(400).send({success: false, message : 'Please provide all fields'});
 
     } else {
-        Employee.create(req.body, (err, employee) => {
+        Employee.create(req.body, (err, result) => {
             if (err) 
-            res.send(err);
-            res.json({ status: true, message: "Employee Created successfully!", data: employee});
+            res.send({ status: "failure", message: err });
+            res.json({ status: true, message: "Employee Created successfully!", data: result});
         });
     }
 };
@@ -50,15 +52,15 @@ exports.create = (req, res) => {
 exports.update = (req, res) => {
     
     // check null
-    if(req.body.constructor === Object && Object.keys(req.body).length === 0) {
+    if(Object.keys(req.body).length === 0) {
 
         res.status(400).send({ success: false, message: 'Please provide all required fields'});
     }
     else {
-        Employee.update(req.params.id, req.body, (err, emp_update) => {
+        Employee.update(req.params.id, req.body, (err, result) => {
             if (err)
-            res.send(err);
-            res.json({ status: true, message: 'Employee Updated successfully', data: emp_update });
+            res.send({ status: "failure", message: err });
+            res.json({ status: true, message: 'Employee Updated successfully', data: result });
         });
     }
 };
@@ -67,11 +69,11 @@ exports.update = (req, res) => {
 // delete employee data:
 exports.delete = (req, res) => {
 
-    Employee.delete(req.params.id, (err, employee) => {
+    Employee.delete(req.params.id, (err, result) => {
 
         if (err)
-        res.send(err);
-        res.json({ status: true, message: 'Employee deleted successfully'});
+        res.send({ status: "failure", message: err });
+        res.json({ status: true, message : 'Employee Deleted Successfully' });
     });
 };
 

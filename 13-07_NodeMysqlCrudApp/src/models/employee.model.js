@@ -2,18 +2,8 @@
 
 var dbConn = require('./../../config/db.config');
 
-// employee object create
-var Employee = function(employee) {
-    this.first_name = employee.first_name;
-    this.last_name = employee.last_name;
-    this.email = employee.email;
-    this.phone = employee.phone;
-    this.salary = employee.salary;
-};
-
-
 // Find all the Data:
-Employee.findAll = (result) => {
+exports.findAll = (result) => {
 
     dbConn.query("Select * from employees", (err, res) => {
         if(err) {
@@ -29,24 +19,25 @@ Employee.findAll = (result) => {
 
 
 // Find the Data by Id:
-Employee.findById = (id, result) => {
+exports.findById = (id, result) => {
 
     dbConn.query("Select * from employees where id = ? ", id, (err, res) => {
         if(err)  {
             console.log("Error while fetching by id", err);
-            result(null, err);
+            return result(null , err);
         }
         else {
-            result(null, res);
+            console.log(res);
+            return result(null , res);
         }
     });
 };
 
 
 // Create the Data:
-Employee.create = (newEmp, result) => {
+exports.create = (data, result) => {
 
-    dbConn.query("INSERT INTO employees SET ?", newEmp, (err, res) => {
+    dbConn.query("INSERT INTO employees SET ?", data, (err, res) => {
         if(err) {
             console.log("Error while inserting data", err);
             result(null, err);
@@ -60,7 +51,7 @@ Employee.create = (newEmp, result) => {
 
 
 // Update the Data: 
-Employee.update = (id, emp_update, result) => {
+exports.update = (id, emp_update, result) => {
 
     dbConn.query("UPDATE employees SET ? WHERE id = ?", 
     [emp_update, id],
@@ -78,7 +69,7 @@ Employee.update = (id, emp_update, result) => {
 
 
 // Deleted Data Forcefully:
-Employee.delete = (id, result) => {
+exports.delete = (id, result) => {
     dbConn.query("Delete from employees WHERE id = ?", [id], (err, res) => {
         if(err) {
             console.log("Error while deleting data", err);
@@ -106,5 +97,3 @@ Employee.delete = (id, result) => {
 
 };
 
-
-module.exports = Employee;
