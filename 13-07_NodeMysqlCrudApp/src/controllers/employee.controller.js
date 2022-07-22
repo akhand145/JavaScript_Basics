@@ -54,7 +54,7 @@ exports.update = (req, res) => {
     // check null
     if(Object.keys(req.body).length === 0) {
 
-        res.status(400).send({ success: false, message: 'Please provide all required fields'});
+        res.status(400).send({ success: false, message: 'Please provide all required fields' });
     }
     else {
         Employee.update(req.params.id, req.body, (err, result) => {
@@ -73,7 +73,7 @@ exports.delete = (req, res) => {
 
         if (err)
         res.send({ status: "failure", message: err });
-        res.json({ status: true, message : 'Employee Deleted Successfully' });
+        res.json({ status: true, message : 'Employee Deleted Successfully', data: result });
     });
 };
 

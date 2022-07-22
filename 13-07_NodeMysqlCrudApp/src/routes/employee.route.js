@@ -3,7 +3,7 @@ const router = express.Router();
 
 const employeeController = require('../controllers/employee.controller');
 
-// Retrieve all emplyees
+// Retrieve all employees
 router.get('/', employeeController.findAll);
 
 // Retrieve a single employee with id
