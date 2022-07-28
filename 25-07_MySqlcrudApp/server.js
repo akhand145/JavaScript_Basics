@@ -1,16 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors')
+const cors = require('cors');
+const dotenv = require('dotenv');
+
 
 // create express app
 const app = express();
+dotenv.config();
 
 // setup server port
-const port =  process.env.PORT || 5500;
+const port = process.env.APP_PORT;
 
 // routes path
-const userRoutes = require('./src/routes/user.route');
-const postRoutes = require('./src/routes/post.route');
+const userRoute = require('./src/routes/user.route');
 
 
 // parse request of content-type -application/x-www-form-urlencoded
@@ -22,18 +24,16 @@ app.use(bodyParser.json());
 
 // using middleware - Create routes
 app.use(cors())
-app.use(express.json())
-app.use('/api/user', userRoutes);
-app.use('/api/post', postRoutes);
+app.use('/api/user', userRoute);
 
 
 app.get('/', (req, res) => {
-    res.send('Hello Everyone');
+    res.send("Hello, We are working with JWT");
 });
 
 
 // listening the port 
-app.listen(port, () => {
-    console.log(`Server is listening on port ${port}`);
+app.listen(process.env.APP_PORT, () => {
+    console.log(`Server is running on port ${port}`);
 });
 

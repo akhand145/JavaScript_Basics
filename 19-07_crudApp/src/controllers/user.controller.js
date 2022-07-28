@@ -11,7 +11,7 @@ exports.findAll = (req, res) => {
         else
         res.json({ status : "Users fetched successfully", message : result });
     });
-}
+}   
 
 // findById user data:
 exports.findById = (req, res) => {
@@ -23,7 +23,7 @@ exports.findById = (req, res) => {
             if(result.length == 0)
             res.json({ status : "failure", message : "Not found!"});
             else
-            res.json({ status : "Post fetched successfully", message : result })
+            res.json({ status : "User fetched successfully", message : result })
         }
     });
 }

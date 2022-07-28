@@ -1,16 +1,14 @@
-'use strict';
 const mysql = require('mysql');
 
 // connection pool
 const pool = mysql.createPool({
     connectionLimit : 10,
-    host : 'localhost',
-    user : 'root',
-    password : '',
-    database : 'crud2',
-    debug : false
+    port : process.env.DB_PORT,
+    host : process.env.DB_HOST,
+    user : process.env.DB_USER,
+    password : process.env.DB_PASS,
+    database : process.env.MYSQL_DB
 });
-
 
 pool.getConnection((err, connection) => {
     if (err) throw err;
@@ -18,3 +16,4 @@ pool.getConnection((err, connection) => {
 });
 
 module.exports = pool;
+

@@ -1,6 +1,6 @@
 'use strict';
 
-const dbConn = require('../../db.config');
+const dbConn = require('../../config/db.config');
 
 // findAll the data:
 exports.findAll = (result) => {
@@ -45,7 +45,7 @@ exports.create = (data, result) => {
                 } else {  
                     result(null, err);
                 }
-        });
+            });
         }
     });
 }
