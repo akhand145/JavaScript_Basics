@@ -12,7 +12,8 @@ dotenv.config();
 const port = process.env.APP_PORT;
 
 // routes path
-const userRoute = require('./src/routes/user.route');
+const userRoute = require('./src/user/routes/user.route');
+const loginRoute = require('./src/user/routes/login.route');
 
 
 // parse request of content-type -application/x-www-form-urlencoded
@@ -24,7 +25,9 @@ app.use(bodyParser.json());
 
 // using middleware - Create routes
 app.use(cors())
+
 app.use('/api/user', userRoute);
+// app.use('/api/login', loginRoute);
 
 
 app.get('/', (req, res) => {

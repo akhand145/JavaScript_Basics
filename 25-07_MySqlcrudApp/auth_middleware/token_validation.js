@@ -1,26 +1,30 @@
-const verify = require('jsonwebtoken');
+const jwt = require('jsonwebtoken/verify');
 
-module.exports = {
+const dotenv = require('dotenv');
+dotenv.config();
 
-    checkToken : (req, res, next) => {
-        let token = req.get("authorization");
+
+    const auth = async(req, res, next) => {
+
+        let token = req.header("Authorization");
         if (token) {
             token = token.slice(7);
-            verify(token, "SECRET_KEY", (err, decoded) => {
+            jwt.verify(token, process.env.SECRET_KEY, (err) => {
                 if (err) {
-                    res.json({
+                    return res.json({
                         success : 0,
                         message : "Invalid Token"
                     });
                 } else {
-                    next();
+                    return next();
                 }
             });
         } else {
-            res.json({
+            return res.json({
                 success : 0,
                 message : "Access Denied! unauthorised user"
             });
         }
     }
-}
+   
+module.exports = auth;

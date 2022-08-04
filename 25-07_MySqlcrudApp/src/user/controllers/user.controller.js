@@ -2,6 +2,10 @@ const userModel = require('../models/user.model');
 const { genSaltSync, hashSync, compareSync } = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
+
 // findAll user data: 
 // exports.findAll = (req, res) => {
 
@@ -157,6 +161,40 @@ exports.delete = (req, res) => {
 // Login a user:
 exports.login = (req, res) => {
 
+    // const { email, password } = req.body;
+    // const body = req.body;
+
+    // userModel.getUserByEmail(body.email, (data) => {
+
+    //     if(body.email.trim() === '' || body.password.trim === '') {
+    //         return res.status(400).json({ message : "Email or Password must not be empty" });
+    //     }
+    
+    //     // Check the user with that email exist or not
+    //     if (data.length === 0) {
+    //         return res.status(401).json({ message : "Email or Password is incorrect" });
+    //     }
+    
+    //     // Check Password
+    //     bcrypt.compare(body.password, data.password).then(isMatch => {
+    //         if (isMatch === false) {
+    //             return res.status(401).json({ message : "Email or Password is incorrect" });
+    //         }
+    
+    //         // Generate Token
+    //         // const token = jwt.sign({ id: data[0].id.toString() }, process.env.SECRET_KEY )
+    //         const result = sign({ result : data[0] }, process.env.SECRET_KEY, {
+    //              expiresIn : "1h"
+    //             });
+    //         return res.status(200).json({
+    //             message : "Logged In Successfully",
+    //             user : data[0],
+    //             token : jsontoken
+    //         });
+    //     });    
+    // });
+    
+
     const body = req.body;
 
     userModel.getUserByEmail(body.email, (err, data) => {
@@ -168,8 +206,8 @@ exports.login = (req, res) => {
         } else {
             const result = compareSync(body.password, data.password);
             if (result) {
-                // data.password = undefined;
-                const jsontoken = sign({ result : data[0] }, "SECRET_KEY", {
+                data.password = undefined;
+                const jsontoken = sign({ result : data[0] }, process.env.SECRET_KEY, {
                     expiresIn : "1h"
                 });
                 return res.status(200).json({

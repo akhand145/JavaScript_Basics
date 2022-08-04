@@ -1,4 +1,4 @@
-const dbConn = require('../../config/db.config');
+const dbConn = require('../../../config/db.config');
 
 
 // findAll the data:

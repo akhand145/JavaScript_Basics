@@ -2,7 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 const userController = require('../controllers/user.controller');
-const { checkToken } = require('../../auth_middleware/token_validation');
+const { checkToken } = require('../../../auth_middleware/token_validation');
+const auth = require('../../../auth_middleware/token_validation');
+
+
+// Secret Routes
+router.get('/verify', auth, (req, res, next) => {
+    console.log("Token Verification");
+});
 
 // Retrieve a user
 router.get('/', userController.getAll);
