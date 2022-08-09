@@ -2,6 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const createError = require('http-errors');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const flash = require('express-flash');
+const session = require('express-session');
 
 
 // create express app
@@ -13,7 +19,7 @@ const port = process.env.APP_PORT;
 
 // routes path
 const userRoute = require('./src/user/routes/user.route');
-const loginRoute = require('./src/user/routes/login.route');
+const postRoute = require('./src/post/routes/post.route');
 
 
 // parse request of content-type -application/x-www-form-urlencoded
@@ -24,10 +30,18 @@ app.use(bodyParser.json());
 
 
 // using middleware - Create routes
-app.use(cors())
+app.use(cors());
+app.use(logger('dev'));
+app.use(flash());
+app.use(session({
+    secret : '123458cat',
+    resave : false,
+    saveUninitialized : true,
+    cookie : {maxAge : 60000}
+}));
 
 app.use('/api/user', userRoute);
-// app.use('/api/login', loginRoute);
+app.use('/api/post', postRoute);
 
 
 app.get('/', (req, res) => {

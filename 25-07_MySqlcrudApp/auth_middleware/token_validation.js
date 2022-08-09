@@ -16,6 +16,7 @@ dotenv.config();
                         message : "Invalid Token"
                     });
                 } else {
+                    console.log("Authorised_user");
                     return next();
                 }
             });

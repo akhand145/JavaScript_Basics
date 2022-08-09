@@ -17,3 +17,5 @@ pool.getConnection((err, connection) => {
 
 module.exports = pool;
 
+// ALTER TABLE users
+// ADD resetLink varchar(255);

@@ -1,1 +1,0 @@
-const loginModel = require('../models/login.model');
