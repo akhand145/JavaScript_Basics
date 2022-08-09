@@ -9,7 +9,7 @@ const auth = require('../../../auth_middleware/token_validation');
 // Signup a new user
 router.post('/', userController.create);
 
-// Signin a user
+// Login a user
 router.post('/login', userController.login);
 
 // Retrieve a user
@@ -36,11 +36,19 @@ router.get('/verify', auth, (req, res, next) => {
 // Show User post:
 router.get('/v1/:id', userController.showUserPost);
 
-// Show all post: Admin Access
-router.get('/v1', userController.adminAccess);
 
-// User forgotPassword:
-router.put('/forgot-password', userController.forgotPassword);
+// Admin Access
+// Show all post: through Admin Access
+router.get('/admin/getAll', userController.adminAccess);
+
+// Show post ById: through Admin Access
+router.get('/admin/:id', userController.adminGetById);
+
+// Update post: through Admin Access
+router.put('/admin/update/:id', userController.adminPostUpdate);
+
+// Delete post ById: through Admin Access
+router.delete('/admin/delete/:id', userController.adminPostDelete);
 
 
 module.exports = router; 

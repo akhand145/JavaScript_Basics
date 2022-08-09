@@ -20,6 +20,7 @@ const port = process.env.APP_PORT;
 // routes path
 const userRoute = require('./src/user/routes/user.route');
 const postRoute = require('./src/post/routes/post.route');
+const profileRoute = require('./src/user/routes/profile.route');
 
 
 // parse request of content-type -application/x-www-form-urlencoded
@@ -42,6 +43,7 @@ app.use(session({
 
 app.use('/api/user', userRoute);
 app.use('/api/post', postRoute);
+app.use('/api/profile', profileRoute);
 
 
 app.get('/', (req, res) => {

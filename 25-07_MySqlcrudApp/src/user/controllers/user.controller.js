@@ -17,9 +17,9 @@ exports.create = (req, res) => {
         if (err) {
             return res.json({ success: false, message: "Database connection error" });
         } else {
-            const jsontokenreg = sign({ data }, process.env.SECRET_KEY, {
-                expiresIn: "1h"
-            });
+            const jsontokenreg = sign({ data }, process.env.SECRET_KEY,
+                { expiresIn: "1h" }
+            );
             console.log(req.body.password);
             return res.status(200).json({
                 success: "Data Created Successfully",
@@ -110,52 +110,6 @@ exports.delete = (req, res) => {
 }
 
 
-// User forgotPassword:
-exports.forgotPassword = (req, res) => {
-    const email = req.body.email;
-
-    userModel.findOne({ email }, (err, user) => {
-        if (err || !user) {
-            return res.status(400).json({ error: "User with this email already exists" });
-        }
-        const token = jwt.sign({ data }, process.env.RESET_PASSWORD_KEY, { expiresIn: "10m" });
-
-        let transport = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true,
-            auth: {
-                user: process.env.GOOGLE_APP_EMAIL,
-                pass: process.env.GOOGLE_APP_PW
-            },
-        });
-
-        const forgot = {
-            to: email,
-            subject: 'Reset Account Password link',
-            html: `<h3> Please Click on given link to reset your password </h3>
-                <p> ${process.env.APP_PORT}/resetPassword/${token} </p>`
-        }
-
-        return user.updateOne({ resetLink: token }, (err, user) => {
-            if (err) {
-                return res.status(400).json({ error: "Reset Password link error" });
-            } else {
-                transport.sendMail(forgot, (err) => {
-                    if (err) {
-                        return res.status(400).json({ error: error.message });
-                    } else {
-                        return res.status(200).json({
-                            message: `Email have been sent! kindly follow the instructions`,
-                            data, token: jsontokenreg
-                        });
-                    }
-                });
-            }
-        })
-    });
-}
-
 
 // Show User post:
 exports.showUserPost = (req, res) => {
@@ -170,10 +124,52 @@ exports.showUserPost = (req, res) => {
 }
 
 
-// Show all post : Admin Access
+// Show all post: through Admin Access
 exports.adminAccess = (req, res) => {
 
     userModel.adminAccess(req.body, (err, data) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: err });
+        } else {
+            return res.status(200).json({ data });
+        }
+    });
+}
+
+
+// Show post ById: through Admin Access
+exports.adminGetById = (req, res) => {
+
+    userModel.adminGetById(req.params.id, (err, data) => {
+        if (err) {
+            return res.json({ success: false, message: error });
+        } else {
+            return res.status(200).json({ data })
+        }
+    });
+}
+
+
+// Update post: through Admin Access
+exports.adminPostUpdate = (req, res) => {
+
+    if (Object.keys(req.body).length === 0) {
+        res.status(400).send({ success: false, message: "Please provide all fields" });
+    } else {
+        userModel.adminPostUpdate(req.params.id, req.body, (err, result) => {
+            if (err)
+                return res.status(500).json({ success: false, message: "Data not updated" });
+            else
+                return res.status(200).json({ success: "Data Updated successfully", data: result });
+        });
+    }
+}
+
+
+// Soft Delete post: through Admin Access
+exports.adminPostDelete = (req, res) => {
+
+    userModel.adminPostDelete(req.params.id, (err, data) => {
         if (err) {
             return res.status(500).json({ success: false, message: err });
         } else {

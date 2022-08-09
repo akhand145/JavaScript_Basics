@@ -124,24 +124,76 @@ exports.delete = (id, result) => {
 exports.showUserPost = (id, result) => {
 
     dbConn.query(`SELECT * FROM users  WHERE id = ?`, id, (err, data) => {
-        console.log(data);
         if (err) {
             return result(err, null);
-        } else
+        } else {
             return result(null, data.filter((item) => item.userTypes === 'User'));
+        }
     });
 }
 
 
-// Show all post : Admin Access
-exports.adminAccess = (result) => {
-    
+// Show all post: through Admin Access
+exports.adminAccess = (req, result) => {
+
     dbConn.query(`SELECT * FROM posts`, req.body, (err, data) => {
         console.log(data);
         if (err) {
             return result(err, null);
-        } else
-        return result(null, data.filter((item) => item.userTypes === 'User'));
+        } else {
+            return result(null, data);
+        }
     });
 }
 
+
+// Show post ById: through Admin Access
+exports.adminGetById = (id, result) => {
+
+    dbConn.query(`SELECT title, description, status, isDeleted, userId FROM posts WHERE id = ?`,
+        [id], (err, data) => {
+            if (err) {
+                return result(err, null);
+            } else {
+                if (data.length == 0)
+                    return result(null, "Record not found");
+                else
+                    return result(null, data);
+            }
+        });
+}
+
+
+// Update post: through Admin Access
+exports.adminPostUpdate = (id, data, result) => {
+
+    dbConn.query(`UPDATE posts SET ?  WHERE id = ?`, [data, id], (err) => {
+        if (err) {
+            return result(err, null);
+        } else {
+            return result(null, data);
+        }
+    });
+}
+
+
+// Soft Delete post: through Admin Access
+exports.adminPostDelete = (id, result) => {
+
+    dbConn.query(`SELECT * FROM posts  WHERE id = ?`, id, (err, data) => {
+        if (err) {
+            return result(err, null);
+        } else {
+            if (data.length == 0)
+                return result(null, "Data does not exist");
+            else
+                dbConn.query(`UPDATE posts SET isDeleted = ?  WHERE id = ?`, [1, id], (err) => {
+                    if (!err) {
+                        return result(null, "Post is Deleted Successfully");
+                    } else {
+                        return result(err, null);
+                    }
+                })
+        }
+    });
+}
