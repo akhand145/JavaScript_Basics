@@ -17,9 +17,8 @@ exports.create = (req, res) => {
         if (err) {
             return res.json({ success: false, message: "Database connection error" });
         } else {
-            const jsontokenreg = sign({ data }, process.env.SECRET_KEY,
-                { expiresIn: "1h" }
-            );
+            const jsontokenreg = sign({ data }, process.env.SECRET_KEY, { expiresIn: "1h" });
+
             console.log(req.body.password);
             return res.status(200).json({
                 success: "Data Created Successfully",
@@ -40,9 +39,8 @@ exports.login = (req, res) => {
             const result = compareSync(req.body.password, data.password);
             if (result) {
                 data.password = undefined;
-                const jsontoken = sign({ result: data[0] }, process.env.SECRET_KEY, {
-                    expiresIn: "1h"
-                });
+                const jsontoken = sign({ result: data[0] }, process.env.SECRET_KEY, { expiresIn: "1h" });
+
                 console.log(req.body.password);
                 return res.status(200).json({
                     success: "Login Successfully", token: jsontoken

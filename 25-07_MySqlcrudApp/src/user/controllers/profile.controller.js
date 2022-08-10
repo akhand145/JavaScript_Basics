@@ -55,23 +55,29 @@ exports.forgotPassword = (req, res) => {
 
 // User resetPassword:
 exports.resetPassword = (req, res) => {
-    
+
     const salt = genSaltSync(10);
     req.body.password = hashSync(req.body.password, salt);
 
-    userModel.update(req.params.id, req.body.email, (err, result) => {
+    userModel.resetPassword(req.params.id, req.body.email, (err, data, result) => {
         if (err) {
-            return res.status(400).json({ error: "User with this email doesn't exists" });
-        }
+            return res.status(400).json({ error: "User with this email doesn't exists" });  
+        } 
         else if (result != data.password) {
             return res.status(500).json({ success: false, message: "Password not matched" });
         } else {
             console.log(req.body.password);
             const result = compareSync(req.body.password, data.password);
             if (result)
-            // new_password === confirm_password;
-            
-            return res.status(200).json({ success: "Password Updated successfully", result : data[0] });
+                data.password = undefined;
+
+            const jsontoken = sign({ result: data[0] }, process.env.SECRET_KEY, { expiresIn: "10m" });
+            // new_password === confirm_password;         
+
+            return res.status(200).json({
+                success: "Password Updated successfully",
+                result: data[0], token: jsontoken
+            });
         }
     });
 }

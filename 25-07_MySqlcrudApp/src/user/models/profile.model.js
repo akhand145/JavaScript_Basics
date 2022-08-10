@@ -2,7 +2,7 @@ const dbConn = require('../../../config/db.config');
 
 
 // User resetPassword:
-exports.update = (id, data, result) => {
+exports.resetPassword = (id, data, result) => {
 
     dbConn.query(`UPDATE users SET ?  WHERE id = ?`, [data, id], (err) => {
         if (err) {
