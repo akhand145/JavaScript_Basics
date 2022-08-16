@@ -1,4 +1,4 @@
-const dbConn = require('../../../config/db.config');
+const dbConn = require('../../config/db.config');
 
 
 // Register a new user:

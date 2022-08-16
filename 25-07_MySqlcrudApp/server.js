@@ -18,9 +18,9 @@ dotenv.config();
 const port = process.env.APP_PORT;
 
 // routes path
-const userRoute = require('./src/user/routes/user.route');
-const postRoute = require('./src/post/routes/post.route');
-const profileRoute = require('./src/user/routes/profile.route');
+const userRoute = require('./src/routes/user.route');
+const postRoute = require('./src/routes/post.route');
+const profileRoute = require('./src/routes/profile.route');
 
 
 // parse request of content-type -application/x-www-form-urlencoded

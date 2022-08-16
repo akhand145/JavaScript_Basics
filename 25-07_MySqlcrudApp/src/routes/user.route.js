@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const userController = require('../controllers/user.controller');
-const { checkToken } = require('../../../auth_middleware/token_validation');
-const auth = require('../../../auth_middleware/token_validation');
+const { checkToken } = require('../../auth_middleware/token_validation');
+const auth = require('../../auth_middleware/token_validation');
 
 
 // Signup a new user
