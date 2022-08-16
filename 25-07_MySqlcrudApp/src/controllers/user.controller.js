@@ -109,14 +109,40 @@ exports.delete = (req, res) => {
 
 
 
-// Show User post:
-exports.showUserPost = (req, res) => {
+// isDeleted users getAll :
+exports.deletedUsers = (req, res) => {
 
-    userModel.showUserPost(req.params.id, (err, data) => {
+    userModel.deletedUsers((err, data) => {
         if (err) {
-            return res.status(500).json({ success: false, message: err });
+            return res.json({ success: false, message: "Record not found" });
         } else {
-            return res.status(200).json({ data });
+            return res.status(200).json({ success: "Deleted Users fetched successfully", data });
+        }
+    });
+}
+
+
+// isDeleted posts getAll :
+exports.deletedPosts = (req, res) => {
+
+    userModel.deletedPosts((err, data) => {
+        if (err) {
+            return res.json({ success: false, message: "Record not found" });
+        } else {
+            return res.status(200).json({ success: "Deleted Users fetched successfully", data });
+        }
+    });
+}
+
+
+// Show User post:
+exports.showUsersList = (req, res) => {
+
+    userModel.showUsersList((err, data) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: "Record not found" });
+        } else {
+            return res.status(200).json({ success: "Only Users fetched successfully", data });
         }
     });
 }

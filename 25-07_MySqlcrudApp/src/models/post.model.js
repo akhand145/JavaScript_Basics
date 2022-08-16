@@ -7,7 +7,7 @@ exports.create = (data, result) => {
     const { title, description, userId } = data;
 
     const insert = `INSERT INTO posts(title, description, status, isDeleted, userId) 
-    VALUES(?, ?, "Approved", 0, ?)`;
+    VALUES(?, ?, "Pending", 0, ?)`;
 
     dbConn.query(insert, [title, description, userId], (err) => {
         if (err) {

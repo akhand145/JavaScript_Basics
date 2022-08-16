@@ -120,10 +120,39 @@ exports.delete = (id, result) => {
 // }
 
 
-// Show User posts:
-exports.showUserPost = (id, result) => {
+// isDeleted users getAll :
+exports.deletedUsers = (result) => {
+    const deletedList = `SELECT * FROM users  WHERE isDeleted = 1`;
 
-    dbConn.query(`SELECT * FROM users  WHERE id = ?`, id, (err, data) => {
+    dbConn.query(deletedList, (err, data) => {
+        if (err) {
+            return result(err, null);
+        } else {
+            return result(null, data);
+        }
+    });
+}
+
+
+// isDeleted posts getAll :
+exports.deletedPosts = (result) => {
+    const deletedList = `SELECT * FROM posts  WHERE isDeleted = 1`;
+
+    dbConn.query(deletedList, (err, data) => {
+        if (err) {
+            return result(err, null);
+        } else {
+            return result(null, data);
+        }
+    });
+}
+
+
+// Show User posts:
+exports.showUsersList = (result) => {
+    const showList = `SELECT * FROM users  WHERE userTypes = 'User'`;
+
+    dbConn.query(showList, (err, data) => {
         if (err) {
             return result(err, null);
         } else {
@@ -193,7 +222,7 @@ exports.adminPostDelete = (id, result) => {
                     } else {
                         return result(err, null);
                     }
-                })
+                });
         }
     });
 }

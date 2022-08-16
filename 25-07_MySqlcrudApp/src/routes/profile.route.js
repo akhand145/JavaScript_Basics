@@ -6,7 +6,7 @@ const auth = require('../../auth_middleware/token_validation');
 
 
 // User forgotPassword:
-router.put('/forgotPassword/:id', userController.forgotPassword);
+// router.put('/forgotPassword/:id', userController.forgotPassword);
 
 // User resetPassword:
 router.post('/resetPassword/:id', userController.resetPassword);

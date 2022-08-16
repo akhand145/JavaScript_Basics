@@ -12,6 +12,8 @@ router.post('/', userController.create);
 // Login a user
 router.post('/login', userController.login);
 
+////////////////////////////////////////////////////////
+
 // Retrieve a user
 router.get('/', userController.getAll);
 
@@ -27,15 +29,27 @@ router.patch('/:id', userController.update);
 // Delete a user
 router.delete('/:id', userController.delete);
 
+////////////////////////////////////////////////////////
+
 // Secret Routes
 router.get('/verify', auth, (req, res, next) => {
     console.log("Token Verification");
 });
 
+////////////////////////////////////////////////////////
+
+// isDeleted users getAll :
+router.get('/admin/deletedUsers', userController.deletedUsers);
+
+// isDeleted posts getAll :
+router.get('/admin/deletedPosts', userController.deletedPosts);
+
+/////////////////////////////////////////////////////////
 
 // Show User post:
-router.get('/v1/:id', userController.showUserPost);
+router.get('/v1/usersOnly', userController.showUsersList);
 
+////////////////////////////////////////////////////////
 
 // Admin Access
 // Show all post: through Admin Access
@@ -45,10 +59,12 @@ router.get('/admin/getAll', userController.adminAccess);
 router.get('/admin/:id', userController.adminGetById);
 
 // Update post: through Admin Access
-router.put('/admin/update/:id', userController.adminPostUpdate);
+router.put('/adminUpdate/:id', userController.adminPostUpdate);
 
 // Delete post ById: through Admin Access
-router.delete('/admin/delete/:id', userController.adminPostDelete);
+router.delete('/adminDelete/:id', userController.adminPostDelete);
+
+///////////////////////////////////////////////////////
 
 
 module.exports = router; 
