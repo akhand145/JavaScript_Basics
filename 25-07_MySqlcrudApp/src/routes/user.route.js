@@ -21,13 +21,13 @@ router.get('/', userController.getAll);
 router.get('/:id', userController.getById);
 
 // Update a user by put
-router.put('/:id', userController.update);
+router.put('/:id', auth, userController.update);
 
 // Update a user by patch
-router.patch('/:id', userController.update);
+router.patch('/:id', auth, userController.update);
 
 // Delete a user
-router.delete('/:id', userController.delete);
+router.delete('/:id', auth, userController.delete);
 
 ////////////////////////////////////////////////////////
 
@@ -39,30 +39,30 @@ router.get('/verify', auth, (req, res, next) => {
 ////////////////////////////////////////////////////////
 
 // isDeleted users getAll :
-router.get('/admin/deletedUsers', userController.deletedUsers);
+router.get('/admin/deletedUsers', auth, userController.deletedUsers);
 
 // isDeleted posts getAll :
-router.get('/admin/deletedPosts', userController.deletedPosts);
+router.get('/admin/deletedPosts', auth, userController.deletedPosts);
 
 /////////////////////////////////////////////////////////
 
 // Show User post:
-router.get('/v1/usersOnly', userController.showUsersList);
+router.get('/v1/usersOnly', auth, userController.showUsersList);
 
 ////////////////////////////////////////////////////////
 
 // Admin Access
 // Show all post: through Admin Access
-router.get('/admin/getAll', userController.adminAccess);
+router.get('/admin/getAll', auth, userController.adminAccess);
 
 // Show post ById: through Admin Access
-router.get('/admin/:id', userController.adminGetById);
+router.get('/admin/:id', auth, userController.adminGetById);
 
 // Update post: through Admin Access
-router.put('/adminUpdate/:id', userController.adminPostUpdate);
+router.put('/adminUpdate/:id', auth, userController.adminPostUpdate);
 
 // Delete post ById: through Admin Access
-router.delete('/adminDelete/:id', userController.adminPostDelete);
+router.delete('/adminDelete/:id', auth, userController.adminPostDelete);
 
 ///////////////////////////////////////////////////////
 

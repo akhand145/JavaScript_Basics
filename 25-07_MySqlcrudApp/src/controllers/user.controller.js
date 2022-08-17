@@ -3,6 +3,7 @@ const { genSaltSync, hashSync, compareSync } = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 
 const dotenv = require('dotenv');
+const { json } = require('body-parser');
 dotenv.config();
 
 
@@ -13,12 +14,16 @@ exports.create = (req, res) => {
     req.body.password = hashSync(req.body.password, salt);
     console.log(req.body.password);
 
+    const jsontokenreg = sign(
+        { email: req.body.email },
+        process.env.SECRET_KEY,
+        { expiresIn: "1h" });
+    req.body.jwtToken = jsontokenreg;
+
     userModel.create(req.body, (err, data) => {
         if (err) {
             return res.json({ success: false, message: "Database connection error" });
         } else {
-            const jsontokenreg = sign({ data }, process.env.SECRET_KEY, { expiresIn: "1h" });
-
             console.log(req.body.password);
             return res.status(200).json({
                 success: "Data Created Successfully",
@@ -36,15 +41,23 @@ exports.login = (req, res) => {
         if (err) {
             return res.json({ message: "Invalid email or password" });
         } else {
+            const jsontoken = sign(
+                { email: req.body.email },
+                process.env.SECRET_KEY,
+                { expiresIn: "1h" });
+            req.body.jwtToken = jsontoken;
+
             const result = compareSync(req.body.password, data.password);
             if (result) {
-                data.password = undefined;
-                const jsontoken = sign({ result: data[0] }, process.env.SECRET_KEY, { expiresIn: "1h" });
-
-                console.log(req.body.password);
-                return res.status(200).json({
-                    success: "Login Successfully", token: jsontoken
-                });
+                userModel.updateToken(jsontoken, data.email, (err, data) => {
+                    if (err) {
+                        return res.json(err);
+                    } else {
+                        return res.status(200).json({
+                            success: "Login Successfully", token: jsontoken
+                        });
+                    }
+                })
             } else {
                 return res.json({ success: 0, message: "Invalid email or password" });
             }
@@ -83,7 +96,7 @@ exports.getById = (req, res) => {
 exports.update = (req, res) => {
 
     const salt = genSaltSync(10);
-    req.body.password = hashSync(req.body.password, salt);
+    // req.body.password = hashSync(req.body.password, salt);
 
     userModel.update(req.params.id, req.body, (err, result) => {
         if (err) {

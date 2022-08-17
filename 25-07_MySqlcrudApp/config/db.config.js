@@ -19,3 +19,7 @@ module.exports = pool;
 
 // ALTER TABLE users
 // ADD resetLink varchar(255);
+
+// ALTER TABLE users
+// ADD jwtToken text;
+

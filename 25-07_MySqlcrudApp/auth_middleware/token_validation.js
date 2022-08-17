@@ -1,12 +1,12 @@
-const jwt = require('jsonwebtoken/verify');
+const jwt = require('jsonwebtoken');
 
 const dotenv = require('dotenv');
 dotenv.config();
 
 
-    const auth = async(req, res, next) => {
-
-        let token = req.header("Authorization");
+    const auth = (req, res, next) => {
+        let token = req.get("Authorization");
+        console.log(token+ " token");
         if (token) {
             token = token.slice(7);
             jwt.verify(token, process.env.SECRET_KEY, (err) => {

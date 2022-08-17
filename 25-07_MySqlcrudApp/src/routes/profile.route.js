@@ -6,13 +6,13 @@ const auth = require('../../auth_middleware/token_validation');
 
 
 // User forgotPassword:
-// router.put('/forgotPassword/:id', userController.forgotPassword);
+// router.put('/forgotPassword/:id', auth, userController.forgotPassword);
 
 // User resetPassword:
-router.post('/resetPassword/:id', userController.resetPassword);
+router.post('/resetPassword/:id', auth, userController.resetPassword);
 
 // User Logout:
-router.put('/logout', userController.logout);
+router.put('/logout/:id', auth, userController.logout);
 
 // Secret Routes
 router.get('/verify', auth, (req, res, next) => {
