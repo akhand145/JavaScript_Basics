@@ -10,50 +10,37 @@ const crypto = require('crypto');
 
 
 // User forgotPassword:
-// exports.forgotPassword = (req, res) => {
-//     const email = req.body.email;
+exports.forgotPassword = (req, res) => {
 
-//     userModel.findOne({ email }, (err, user) => {
-//         if (err || !user) {
-//             return res.status(400).json({ error: "User with this email doesn't exists" });
-//         }
-//         const token = jwt.sign({ data }, process.env.RESET_PASSWORD_KEY, { expiresIn: "10m" });
+    console.log(req.body);
 
-//         let transport = nodemailer.createTransport({
-//             host: 'smtp.gmail.com',
-//             port: 465,
-//             secure: true,
-//             auth: {
-//                 user: process.env.GOOGLE_APP_EMAIL,
-//                 pass: process.env.GOOGLE_APP_PW
-//             },
-//         });
+    if (req.body.new_password === req.body.confirm_password) {
+        const salt = genSaltSync(10);
+        const hashPass = hashSync(req.body.new_password, salt);
 
-//         const forgot = {
-//             to: email,
-//             subject: 'Reset Account Password link',
-//             html: `<h3> Please Click on given link to reset your password </h3>
-//                 <p> ${process.env.APP_PORT}/resetPassword/${token} </p>`
-//         }
+        userModel.forgotPassword(req.body.email, (err, data) => {
+            console.log(data[0].password);
+            const result = req.body.email === data[0].email;
 
-//         return user.updateOne({ resetLink: token }, (err, user) => {
-//             if (err) {
-//                 return res.status(400).json({ error: "Reset Password link error" });
-//             } else {
-//                 transport.sendMail(forgot, (err) => {
-//                     if (err) {
-//                         return res.status(400).json({ error: error.message });
-//                     } else {
-//                         return res.status(200).json({
-//                             message: `Email have been sent! kindly follow the instructions`,
-//                             data, token: jsontokenreg
-//                         });
-//                     }
-//                 });
-//             }
-//         })
-//     });
-// }
+            if (result) {
+                userModel.updatePassword(req.params.id, hashPass, (err, data) => {
+                    if (data) {
+                        return res.status(200).json({
+                            success: "Password updated Successfully",
+                            result: data[0]
+                        });
+                    } else {
+                        return res.json(err);
+                    }
+                })
+            } else {
+                return res.status(400).json(err);
+            }
+        })
+    } else {
+        return res.status(500).json({ success: true, message: "Email not matched" });
+    }
+}
 
 
 // User resetPassword:

@@ -6,7 +6,7 @@ const auth = require('../../auth_middleware/token_validation');
 
 
 // User forgotPassword:
-// router.put('/forgotPassword/:id', auth, userController.forgotPassword);
+router.put('/forgotPassword/:id', auth, userController.forgotPassword);
 
 // User resetPassword:
 router.put('/resetPassword/:id', auth, userController.resetPassword);
@@ -21,3 +21,4 @@ router.get('/verify', auth, (req, res, next) => {
 
 
 module.exports = router; 
+
