@@ -92,10 +92,13 @@ exports.resetPassword = (req, res) => {
 
 // User Logout
 exports.logout = (req, res) => {
-    const email = req.body.email;
 
-    userModel.findOne({ email }, (err, user) => {
-
+    userModel.logout({ id: req.params.id }, (err, data) => {
+        if (err) {
+            res.status(400).json(err)
+        } else {
+            res.status(200).json({ success: true, message: "Logout Successfully", data });
+        }
     });
 }
 

@@ -28,3 +28,16 @@ exports.updatePassword = (id, new_password, result) => {
     });
 }
 
+
+// User Logout:
+exports.logout = (id, result) => {
+    const update = `UPDATE users SET jwtToken = ''  WHERE id = ?`;
+
+    dbConn.query(update, id, (err, data) => {
+        if (!err) {
+            return result(null, data);
+        } else {
+            return result(err, null);
+        }
+    });
+}
