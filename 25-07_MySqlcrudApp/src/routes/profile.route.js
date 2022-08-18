@@ -12,7 +12,7 @@ router.put('/forgotPassword/:id', auth, userController.forgotPassword);
 router.put('/resetPassword/:id', auth, userController.resetPassword);
 
 // User Logout:
-router.get('/logout/:id', auth, userController.logout);
+router.get('/logout', auth, userController.logout);
 
 // Secret Routes
 router.get('/verify', auth, (req, res, next) => {
@@ -20,5 +20,5 @@ router.get('/verify', auth, (req, res, next) => {
 });
 
 
-module.exports = router; 
+module.exports = router;
 

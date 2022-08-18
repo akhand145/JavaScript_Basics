@@ -1,5 +1,5 @@
 const userModel = require('../models/profile.model');
-const { genSaltSync, hashSync, compareSync } = require('bcrypt');
+const { genSalt, hash, compareSync, genSaltSync, hashSync } = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 
 const dotenv = require('dotenv');
@@ -38,7 +38,7 @@ exports.forgotPassword = (req, res) => {
             }
         })
     } else {
-        return res.status(500).json({ success: true, message: "Email not matched" });
+        return res.status(500).json({ success: false, message: "Password not matched" });
     }
 }
 
@@ -80,7 +80,7 @@ exports.resetPassword = (req, res) => {
 // User Logout
 exports.logout = (req, res) => {
 
-    userModel.logout({ id: req.params.id }, (err, data) => {
+    userModel.logout(req.body.email, (err, data) => {
         if (err) {
             res.status(400).json(err)
         } else {
