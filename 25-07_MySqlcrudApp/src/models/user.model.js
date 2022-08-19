@@ -159,7 +159,7 @@ exports.deletedPosts = (result) => {
 }
 
 
-// Show User posts:
+// Show User List:
 exports.showUsersList = (result) => {
     const showList = `SELECT * FROM users  WHERE userTypes = 'User'`;
 

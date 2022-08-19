@@ -148,7 +148,7 @@ exports.deletedPosts = (req, res) => {
 }
 
 
-// Show User post:
+// Show User List:
 exports.showUsersList = (req, res) => {
 
     userModel.showUsersList((err, data) => {

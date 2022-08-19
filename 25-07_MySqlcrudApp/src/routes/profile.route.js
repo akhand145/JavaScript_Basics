@@ -2,20 +2,24 @@ const express = require('express');
 const router = express.Router();
 
 const userController = require('../controllers/profile.controller');
-const auth = require('../../auth_middleware/token_validation');
+const middleware = require('../../middleware/validation');
 
 
 // User forgotPassword:
-router.put('/forgotPassword/:id', auth, userController.forgotPassword);
+router.put('/forgotPassword/:id', middleware.tokenVerify, middleware.isUser, userController.forgotPassword);
 
 // User resetPassword:
-router.put('/resetPassword/:id', auth, userController.resetPassword);
+router.put('/resetPassword/:id', middleware.tokenVerify, middleware.isUser, userController.resetPassword);
 
 // User Logout:
-router.get('/logout', auth, userController.logout);
+router.get('/logout', middleware.tokenVerify, middleware.isUser, userController.logout);
+
+// User forgotPassword with NodeMailer:
+router.put('/forgotPasswordNodemailer/:id', middleware.tokenVerify, middleware.isUser, userController.forgotPasswordNodemailer);
+
 
 // Secret Routes
-router.get('/verify', auth, (req, res, next) => {
+router.get('/verify', middleware.tokenVerify, (req, res, next) => {
     console.log("Token Verification");
 });
 

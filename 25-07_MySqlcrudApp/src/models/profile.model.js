@@ -1,5 +1,9 @@
 const dbConn = require('../../config/db.config');
 
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const validationResult = require('express-validator');
+
 
 // User forgotPassword:
 exports.forgotPassword = (email, result) => {
@@ -50,6 +54,27 @@ exports.logout = (email, result) => {
     dbConn.query(update, email, (err, data) => {
         if (!err) {
             return result(null, data);
+        } else {
+            return result(err, null);
+        }
+    });
+}
+
+
+// User forgotPassword with NodeMailer:
+exports.sendOTP = (email, result) => {
+    const update = await `SELECT * FROM users  WHERE email = ?`;
+    const otp = await `SELECT * FROM SENT_OTP  WHERE email = ?`;
+
+    dbConn.query(update, email, (err) => {
+        if (!err) {
+            dbConn.query(otp, email, (err, data) => {
+                if (!err) {
+                    return result(null, data);
+                } else {
+                    return result(err, null);
+                }
+            })
         } else {
             return result(err, null);
         }
