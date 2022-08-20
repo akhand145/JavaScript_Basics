@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const userController = require('../controllers/user.controller');
-const { checkToken } = require('../../middleware/validation');
-const middleware = require('../../middleware/validation');
+const { tokenVerify, isAdmin, isUser } = require('../../middleware/validation');
 
 
 // Signup a new user
@@ -15,54 +14,47 @@ router.post('/login', userController.login);
 ////////////////////////////////////////////////////////
 
 // Retrieve a user
-router.get('/', middleware.isUser, userController.getAll);
+router.get('/', userController.getAll);
 
 // Retrieve a single user with id
-router.get('/:id', middleware.isUser, userController.getById);
+router.get('/:id', userController.getById);
 
 // Update a user by put
-router.put('/:id', middleware.tokenVerify, middleware.isUser, userController.update);
+router.put('/:id', tokenVerify, userController.update);
 
 // Update a user by patch
-router.patch('/:id', middleware.tokenVerify, middleware.isUser, userController.update);
+router.patch('/:id', tokenVerify, userController.update);
 
 // Delete a user
-router.delete('/:id', middleware.tokenVerify, middleware.isUser, userController.delete);
-
-////////////////////////////////////////////////////////
-
-// Secret Routes
-router.get('/verify', middleware.tokenVerify, (req, res, next) => {
-    console.log("Token Verification");
-});
+router.delete('/:id', tokenVerify, userController.delete);
 
 ////////////////////////////////////////////////////////
 
 // isDeleted users getAll :
-router.get('/admin/deletedUsers', middleware.tokenVerify, middleware.isAdmin, userController.deletedUsers);
+router.get('/admin/deletedUsers', tokenVerify, userController.deletedUsers);
 
 // isDeleted posts getAll :
-router.get('/admin/deletedPosts', middleware.tokenVerify, middleware.isAdmin, userController.deletedPosts);
+router.get('/admin/deletedPosts', tokenVerify, userController.deletedPosts);
 
 /////////////////////////////////////////////////////////
 
 // Show User List:
-router.get('/v1/usersOnly', middleware.tokenVerify, middleware.isAdmin, userController.showUsersList);
+router.get('/v1/usersOnly', tokenVerify, userController.showUsersList);
 
 ////////////////////////////////////////////////////////
 
 // Admin Access
 // Show all post: through Admin Access
-router.get('/admin/getAll', middleware.tokenVerify, middleware.isAdmin, userController.adminAccess);
+router.get('/admin/getAll', tokenVerify, userController.adminAccess);
 
 // Show post ById: through Admin Access
-router.get('/admin/:id', middleware.tokenVerify, middleware.isAdmin, userController.adminGetById);
+router.get('/admin/:id', tokenVerify, userController.adminGetById);
 
 // Update post: through Admin Access
-router.put('/adminUpdate/:id', middleware.tokenVerify, middleware.isAdmin, userController.adminPostUpdate);
+router.put('/adminUpdate/:id', tokenVerify, userController.adminPostUpdate);
 
 // Delete post ById: through Admin Access
-router.delete('/adminDelete/:id', middleware.tokenVerify, middleware.isAdmin, userController.adminPostDelete);
+router.delete('/adminDelete/:id', tokenVerify, userController.adminPostDelete);
 
 ///////////////////////////////////////////////////////
 

@@ -2,26 +2,26 @@ const express = require('express');
 const router = express.Router();
 
 const postController = require('../controllers/post.controller');
-const middleware = require('../../middleware/validation');
+const { tokenVerify, isAdmin, isUser } = require('../../middleware/validation');
 
 
 // Create a new user
-router.post('/', middleware.tokenVerify, middleware.isUser, postController.create);
+router.post('/', tokenVerify, postController.create);
 
 // retreive all post
-router.get('/', middleware.tokenVerify, middleware.isUser, postController.getAll);
+router.get('/', tokenVerify, postController.getAll);
 
 // Retrieve a single post with id
-router.get('/:id', middleware.tokenVerify, middleware.isUser, postController.getById);
+router.get('/:id', tokenVerify, postController.getById);
 
 // Update a post with id using put
-router.put('/:id', middleware.tokenVerify, middleware.isUser, postController.update);
+router.put('/:id', tokenVerify, postController.update);
 
 // Update a post with id using patch
-router.patch('/:id', middleware.tokenVerify, middleware.isUser, postController.update);
+router.patch('/:id', tokenVerify, postController.update);
 
 // Delete a user with id
-router.delete('/:id', middleware.tokenVerify, middleware.isUser, postController.delete);
+router.delete('/:id', tokenVerify, postController.delete);
 
 
 module.exports = router; 

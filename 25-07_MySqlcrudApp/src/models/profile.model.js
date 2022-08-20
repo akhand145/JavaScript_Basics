@@ -1,8 +1,8 @@
 const dbConn = require('../../config/db.config');
 
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-const validationResult = require('express-validator');
+// const jwt = require('jsonwebtoken');
+// const nodemailer = require('nodemailer');
+// const validationResult = require('express-validator');
 
 
 // User forgotPassword:
@@ -61,20 +61,50 @@ exports.logout = (email, result) => {
 }
 
 
-// User forgotPassword with NodeMailer:
-exports.sendOTP = (email, result) => {
-    const update = await `SELECT * FROM users  WHERE email = ?`;
-    const otp = await `SELECT * FROM SENT_OTP  WHERE email = ?`;
+// User findByEmail:
+exports.findByEmail = (email, result) => {
+    const getEmail = `SELECT * FROM users  WHERE email = ?`;
 
-    dbConn.query(update, email, (err) => {
+    dbConn.query(getEmail, email, (err, data) => {
         if (!err) {
-            dbConn.query(otp, email, (err, data) => {
-                if (!err) {
-                    return result(null, data);
-                } else {
-                    return result(err, null);
-                }
-            })
+            return result(null, data);
+        } else {
+            return result(err, null);
+        }
+    })
+}
+
+
+exports.findOtpByEmail = (email, result) => {
+    const findOtp = `SELECT * FROM sentOTP  WHERE email = ?`;
+
+    dbConn.query(findOtp, email, (err, data) => {
+        if (!err) {
+            return result(null, data);
+        } else {
+            return result(err, null);
+        }
+    });
+}
+
+exports.insertOtp = (email, otp, id, result) => {
+    const query = `INSERT INTO sentOTP (email, userID, otp) VALUES(?, ?, ?)`;
+
+    dbconn.query(query, [email, otp, id], (err, data) => {
+        if (!err) {
+            return result(null, data);
+        } else {
+            return result(err, null);
+        }
+    });
+}
+
+exports.updateOtpStatus = (email, result) => {
+    const query = `UPDATE sentOTP SET is_verify = 'Yes'  WHERE email = ?`;
+
+    dbconn.query(query, email, (err, data) => {
+        if (!err) {
+            return result(null, data);
         } else {
             return result(err, null);
         }

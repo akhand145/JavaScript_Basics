@@ -31,7 +31,7 @@ exports.tokenVerify = (req, res, next) => {
 
 exports.isUser = (req, res, next) => {
 
-    if (res.locals.userTypes == 'User') {
+    if (req.body.userTypes === 'User') {
         next();
     } else {
         res.send("You don't have the authorization");
@@ -41,7 +41,7 @@ exports.isUser = (req, res, next) => {
 
 exports.isAdmin = (req, res, next) => {
 
-    if (res.locals.userTypes == 'Admin') {
+    if (req.body.userTypes === 'Admin') {
         next();
     } else {
         res.send("You don't have the authorization");
